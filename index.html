@@ -267,7 +267,7 @@
       <ul class="bare">
         <li><span class="prompt">›</span>building python / qgis tooling for geospatial water-network modelling at kios</li>
         <li><span class="prompt">›</span>scoping an undergraduate thesis around llm serving systems</li>
-        <li><span class="prompt">›</span>running a small homelab on a raspberry pi 5</li>
+        <li><span class="prompt">›</span>running <a href="https://github.com/AndrewDemsDS/baseplate">baseplate/</a>, my self-hosted docker stack, on a raspberry pi 5</li>
       </ul>
     </section>
 
@@ -288,18 +288,18 @@
 
         <div class="project">
           <div class="top">
-            <span class="name">homelab.pi5/</span>
-            <span class="meta">production · single host</span>
+            <a class="name" href="https://github.com/AndrewDemsDS/baseplate">baseplate/</a>
+            <span class="meta">oss · single-host self-host</span>
           </div>
           <div class="desc">
-            a self-hosted stack running on one raspberry pi 5: nextcloud,
-            vaultwarden, paperless-ngx, mosquitto, wireguard, all reverse-proxied
-            through traefik with letsencrypt via the cloudflare dns challenge.
-            external access via cloudflare tunnels; orchestrated through
-            portainer.
+            opinionated docker-compose stack for a single host: traefik with
+            letsencrypt via cloudflare dns-01, cloudflare tunnel for outbound-only
+            ingress, and opt-in profiles for nextcloud, vaultwarden, paperless-ngx,
+            mosquitto, wireguard. the recipe i actually run on a raspberry pi 5,
+            extracted into a forkable template.
           </div>
           <div class="tags">
-            <span>docker</span><span>traefik</span><span>cloudflare tunnels</span><span>portainer</span><span>nixos-curious</span>
+            <span>docker</span><span>traefik</span><span>cloudflare tunnels</span><span>self-hosted</span><span>raspberry pi</span>
           </div>
         </div>
 
