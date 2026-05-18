@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>andreas demosthenous</title>
+<meta name="description" content="Andreas Demosthenous — CS undergrad at the University of Cyprus, software engineer intern at KIOS. Linux internals, LLM systems, self-hosted infra." />
+<link rel="icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><rect width='16' height='16' fill='%230a0a0a'/><text x='3' y='12' font-family='monospace' font-size='10' fill='%23d4763a'>&gt;</text></svg>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg:        #0a0a0a;
+    --bg-soft:   #111111;
+    --line:      #1f1f1f;
+    --fg:        #e8e3d3;
+    --fg-muted:  #6b6b66;
+    --fg-quiet:  #3f3f3c;
+    --accent:    #d4763a;
+    --accent-2:  #f0b878;
+    --selection: #d4763a44;
+
+    --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    --maxw: 720px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 15px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+    /* extremely subtle film grain */
+    background-image:
+      radial-gradient(rgba(255,255,255,0.012) 1px, transparent 1px);
+    background-size: 3px 3px;
+  }
+  ::selection { background: var(--selection); color: var(--fg); }
+
+  a {
+    color: var(--fg);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--fg-muted);
+    transition: color 90ms ease, border-color 90ms ease;
+  }
+  a:hover, a:focus-visible {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    outline: none;
+  }
+
+  /* terminal-style header bar */
+  .statusbar {
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(to bottom, #0c0c0c, var(--bg));
+    color: var(--fg-muted);
+    font-size: 12px;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    z-index: 10;
+  }
+  .statusbar .left, .statusbar .right { display: flex; gap: 14px; align-items: center; }
+  .statusbar .dot { color: var(--accent); }
+  .statusbar .quiet { color: var(--fg-quiet); }
+
+  main {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 56px 20px 96px;
+  }
+
+  /* prompt */
+  .prompt {
+    color: var(--accent);
+    user-select: none;
+    margin-right: 8px;
+  }
+  .prompt::after { content: ''; }
+
+  /* name block */
+  .hero {
+    margin: 8px 0 40px;
+  }
+  .hero .who {
+    color: var(--fg-muted);
+    font-size: 13px;
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(28px, 4.8vw, 40px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 6px;
+  }
+  .hero h1 .cursor {
+    display: inline-block;
+    width: 0.55em;
+    height: 1em;
+    background: var(--accent);
+    margin-left: 6px;
+    transform: translateY(0.16em);
+    animation: blink 1.05s steps(2) infinite;
+  }
+  @keyframes blink { 0%,49% { opacity: 1; } 50%,100% { opacity: 0; } }
+  .hero .role {
+    color: var(--fg-muted);
+    font-size: 15px;
+    margin-top: 4px;
+  }
+  .hero .role b { color: var(--fg); font-weight: 500; }
+
+  /* sections */
+  section {
+    margin: 44px 0;
+    opacity: 0;
+    transform: translateY(4px);
+    animation: rise 360ms ease forwards;
+  }
+  section:nth-of-type(1) { animation-delay: 40ms; }
+  section:nth-of-type(2) { animation-delay: 90ms; }
+  section:nth-of-type(3) { animation-delay: 130ms; }
+  section:nth-of-type(4) { animation-delay: 170ms; }
+  section:nth-of-type(5) { animation-delay: 210ms; }
+  section:nth-of-type(6) { animation-delay: 250ms; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  h2 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--fg-muted);
+    letter-spacing: 0.06em;
+    text-transform: lowercase;
+    margin: 0 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  h2::before { content: '##'; color: var(--accent); font-weight: 700; }
+  h2 .count { color: var(--fg-quiet); font-size: 12px; margin-left: auto; }
+
+  p { margin: 0 0 12px; }
+
+  /* listings */
+  ul.bare { list-style: none; padding: 0; margin: 0; }
+  ul.bare li { padding: 2px 0; }
+
+  /* projects: file-listing style */
+  .projects { display: grid; gap: 14px; }
+  .project {
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    background: var(--bg-soft);
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .project:hover { border-color: var(--fg-muted); }
+  .project .top {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+  }
+  .project .name { color: var(--accent); font-weight: 500; }
+  .project .meta { color: var(--fg-quiet); font-size: 12px; }
+  .project .desc { color: var(--fg); font-size: 14.5px; }
+  .project .tags { margin-top: 8px; font-size: 12px; color: var(--fg-muted); }
+  .project .tags span:not(:last-child)::after { content: ' · '; color: var(--fg-quiet); }
+
+  /* interests */
+  .tags-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    font-size: 14px;
+  }
+  .tags-row .pill {
+    color: var(--fg);
+  }
+  .tags-row .pill::before { content: '· '; color: var(--accent); }
+
+  /* contact */
+  .contact ul { display: grid; gap: 4px; }
+  .contact .k { display: inline-block; width: 88px; color: var(--fg-muted); }
+
+  /* footer */
+  footer {
+    color: var(--fg-quiet);
+    font-size: 12px;
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  footer a { color: var(--fg-muted); border-bottom-color: transparent; }
+  footer a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+
+  @media (max-width: 480px) {
+    body { font-size: 14px; }
+    .statusbar { font-size: 11px; }
+    main { padding-top: 36px; }
+    .contact .k { width: 72px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero h1 .cursor { animation: none; opacity: 1; }
+    section { animation: none; opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+  <div class="statusbar" role="status">
+    <div class="left">
+      <span class="dot">●</span>
+      <span>andreasincode.com</span>
+      <span class="quiet">/ ~</span>
+    </div>
+    <div class="right">
+      <span class="quiet">tty1</span>
+      <span id="loc" class="quiet">nicosia · cy</span>
+      <span id="clock"></span>
+    </div>
+  </div>
+
+  <main>
+    <div class="hero">
+      <div class="who"><span class="prompt">$</span>whoami</div>
+      <h1>andreas demosthenous<span class="cursor" aria-hidden="true"></span></h1>
+      <div class="role">
+        cs undergrad @ <b>university of cyprus</b><br />
+        software engineer intern @ <b>kios research and innovation center of excellence</b>
+      </div>
+    </div>
+
+    <section>
+      <h2>about</h2>
+      <p>
+        i build things across the stack — from geospatial python tooling at work,
+        to embedded firmware, to the kernel of my phone. comfortable somewhere
+        between a syscall trace and a docker-compose file. interested in how
+        large language models behave when you actually have to feed them
+        electricity.
+      </p>
+    </section>
+
+    <section>
+      <h2>currently</h2>
+      <ul class="bare">
+        <li><span class="prompt">›</span>building python / qgis tooling for geospatial water-network modelling at kios</li>
+        <li><span class="prompt">›</span>scoping an undergraduate thesis around llm serving systems</li>
+        <li><span class="prompt">›</span>running a small homelab on a raspberry pi 5</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>interests</h2>
+      <div class="tags-row">
+        <span class="pill">llm systems &amp; on-device inference</span>
+        <span class="pill">linux internals</span>
+        <span class="pill">self-hosted infra</span>
+        <span class="pill">embedded &amp; iot</span>
+        <span class="pill">geospatial python</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>projects <span class="count">// pinned</span></h2>
+      <div class="projects">
+
+        <div class="project">
+          <div class="top">
+            <span class="name">homelab.pi5/</span>
+            <span class="meta">production · single host</span>
+          </div>
+          <div class="desc">
+            a self-hosted stack running on one raspberry pi 5: nextcloud,
+            vaultwarden, paperless-ngx, mosquitto, wireguard, all reverse-proxied
+            through traefik with letsencrypt via the cloudflare dns challenge.
+            external access via cloudflare tunnels; orchestrated through
+            portainer.
+          </div>
+          <div class="tags">
+            <span>docker</span><span>traefik</span><span>cloudflare tunnels</span><span>portainer</span><span>nixos-curious</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="top">
+            <span class="name">smart_home_iot/</span>
+            <span class="meta">private · multi-node</span>
+          </div>
+          <div class="desc">
+            multi-node home automation + a custom-built security system across
+            esp32 and raspberry pi units; small full-stack web ui for monitoring
+            and control.
+          </div>
+          <div class="tags">
+            <span>esp32</span><span>raspberry pi</span><span>mqtt</span><span>full-stack web</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="top">
+            <span class="name">android_kernels/</span>
+            <span class="meta">downstream</span>
+          </div>
+          <div class="desc">
+            maintained device trees and kernel forks for xiaomi (lavender,
+            sdm660-common) and samsung (universal7880) devices on aosp /
+            lineageos. low-level dive into arm bring-up, vendor blobs, and
+            kernel patches.
+          </div>
+          <div class="tags">
+            <span>aosp</span><span>lineageos</span><span>linux kernel</span><span>arm</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="top">
+            <span class="name">ollama-flake/</span>
+            <span class="meta">nix · oss</span>
+          </div>
+          <div class="desc">
+            a nix flake packaging ollama for reproducible, isolated deployment
+            of local llm inference. used to keep a llama.cpp / ollama stack
+            pinned across machines.
+          </div>
+          <div class="tags">
+            <span>nix</span><span>ollama</span><span>llama.cpp</span><span>local llms</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="contact">
+      <h2>contact</h2>
+      <ul class="bare">
+        <li><span class="k">email</span><a href="mailto:hello@andreasincode.com">hello@andreasincode.com</a></li>
+        <li><span class="k">github</span><a href="https://github.com/AndrewDemsDS" rel="me noreferrer">github.com/AndrewDemsDS</a></li>
+        <li><span class="k">linkedin</span><a href="https://linkedin.com/in/andrewdems" rel="me noreferrer">linkedin.com/in/andrewdems</a></li>
+        <li><span class="k">cv</span><a href="/cv.pdf">/cv.pdf</a></li>
+      </ul>
+    </section>
+
+    <footer>
+      <span>last_updated · <span id="updated">—</span></span>
+      <span>built by hand · <a href="https://github.com/AndrewDemsDS">source</a></span>
+    </footer>
+  </main>
+
+<script>
+  // tiny clock in status bar — Nicosia time
+  function pad(n){ return String(n).padStart(2,'0'); }
+  function tick(){
+    const fmt = new Intl.DateTimeFormat('en-GB', {
+      hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'Asia/Nicosia'
+    });
+    const t = fmt.format(new Date());
+    const el = document.getElementById('clock');
+    if (el) el.textContent = t + ' eet';
+  }
+  tick();
+  setInterval(tick, 30 * 1000);
+
+  // last-updated stamp baked at build time
+  const lu = document.getElementById('updated');
+  if (lu) {
+    const d = new Date(document.lastModified);
+    lu.textContent = d.toISOString().slice(0,10);
+  }
+</script>
+</body>
+</html>
