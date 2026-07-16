@@ -291,6 +291,24 @@
 
         <div class="project">
           <div class="top">
+            <a class="name" href="https://github.com/AndrewDemsDS/hisense-w41h1">hisense-w41h1/</a>
+            <span class="meta">oss · matter firmware</span>
+          </div>
+          <div class="desc">
+            de-clouded a hisense aeh-w41h1 a/c wi-fi module (realtek rtl8710c /
+            amebaz2): sniffed and decoded its internal rs-485 protocol, then wrote
+            custom matter firmware in c/c++ for fully local home assistant control,
+            no cloud. ch341 flashing plus wi-fi ota, host-only qa, and github
+            actions that build, sign and publish releases; also an esp32
+            (esp-matter) replacement path for dead modules.
+          </div>
+          <div class="tags">
+            <span>c/c++</span><span>reverse engineering</span><span>matter</span><span>rs-485</span><span>amebaz2</span><span>home assistant</span>
+          </div>
+        </div>
+
+        <div class="project">
+          <div class="top">
             <a class="name" href="https://github.com/AndrewDemsDS/baseplate">baseplate/</a>
             <span class="meta">oss · single-host self-host</span>
           </div>
@@ -309,16 +327,18 @@
 
         <div class="project">
           <div class="top">
-            <span class="name">smart_home_iot/</span>
-            <span class="meta">private · multi-node</span>
+            <a class="name" href="https://github.com/AndrewDemsDS/tuxedo-control-nix">tuxedo-control-nix/</a>
+            <span class="meta">oss · nixos module</span>
           </div>
           <div class="desc">
-            multi-node home automation and a custom-built security system across
-            esp32 and raspberry pi units; full-stack web ui for monitoring and
-            control.
+            a declarative, nixos-native replacement for tuxedo laptop hardware
+            control — fan curves, performance profiles, keyboard backlight and
+            charging. reverse-engineered the tuxedo_io kernel ioctl interface
+            and built a small root daemon (plus cli, tui and gtk4 gui)
+            to replace the official electron app.
           </div>
           <div class="tags">
-            <span>esp32</span><span>raspberry pi</span><span>mqtt</span><span>full-stack web</span>
+            <span>nix</span><span>rust</span><span>reverse engineering</span><span>linux ec</span><span>nixos module</span>
           </div>
         </div>
 
@@ -340,18 +360,16 @@
 
         <div class="project">
           <div class="top">
-            <a class="name" href="https://github.com/AndrewDemsDS/tuxedo-control-nix">tuxedo-control-nix/</a>
-            <span class="meta">oss · nixos module</span>
+            <span class="name">smart_home_iot/</span>
+            <span class="meta">private · multi-node</span>
           </div>
           <div class="desc">
-            a declarative, nixos-native replacement for tuxedo laptop hardware
-            control — fan curves, performance profiles, keyboard backlight and
-            charging. reverse-engineered the tuxedo_io kernel ioctl interface
-            and built a small root daemon (plus cli, tui and gtk4 gui)
-            to replace the official electron app.
+            multi-node home automation and a custom-built security system across
+            esp32 and raspberry pi units; full-stack web ui for monitoring and
+            control.
           </div>
           <div class="tags">
-            <span>nix</span><span>rust</span><span>reverse engineering</span><span>linux ec</span><span>nixos module</span>
+            <span>esp32</span><span>raspberry pi</span><span>mqtt</span><span>full-stack web</span>
           </div>
         </div>
 
